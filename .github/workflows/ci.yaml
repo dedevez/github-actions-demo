@@ -1,96 +1,96 @@
-# name: Demo CI/CD Pipeline
+name: Demo CI/CD Pipeline
 
-# # Define Trigger: This will start the pipeline when code is pushed or merged to the main branch of the repository
-# on:
-#   push:
-#     branches:
-#       - main
+# Define Trigger: This will start the pipeline when code is pushed or merged to the main branch of the repository
+on:
+  push:
+    branches:
+      - main
 
-# # Global Environment Variable
-# env:
-#   PP_NAME: '${{ github.repository }}'
-#   REGISTRY: ghcr.io
-    
-# # Create Build Task
-# jobs:
-#   build:
-#     name: Build & Publish Docker Image
-#     runs-on: ubuntu-latest
-# # Set Permissions
-#     permissions:
-#       contents: read
-#       packages: write
-# # Set Outputs
-#     outputs:
-#       image-tag: '${{ steps.meta.outputs.tags }}'
-# # Add Code Checkout Build Step
-#     steps:
-#     - name: Checkout Repository
-#       uses: actions/checkout@v4
-# # Add Container Login Step
-#     - name: Login to Container registry
-#       uses: docker/login-action@v3
-#       with:
-#         registry: '${{ env.REGISTRY}}'
-#         username: '${{ github.actor }}'
-#         password: '${{ secrets.GITHUB_TOKEN }}'
-# # Create Docker Metadata
-#     - name: Extract metadata for Docker
-#       id: meta
-#       uses: docker/metadata-action@v4
-#       with:
-#         images: '${{ env.REGISTRY }}/${{ env.APP_NAME }}'        
-#         tags: |
-#           type=sha, format=short
-# # Build and Publish Docker Image
-#     - name: Build & Publish Docker Image     
-#       uses: docker/build-push-action@v5
-#       with:
-#         context: .
-#         push: true
-#         tags: '${{ steps.meta.outputs.tags }}'
-#         labels: '${{ steps.meta.outputs.labels }}'
-
-name: CLUS GitHub Actions Demo 
-
-on: 
-    push:
-        branches:
-            - main
-
+# Global Environment Variable
 env:
-    APP_NAME: '${{ github.repository }}'
-    REGISTRY: ghcr.io
-
+  PP_NAME: '${{ github.repository }}'
+  REGISTRY: ghcr.io
+    
+# Create Build Task
 jobs:
-    build:
-        name: Build & Publish Docker Image
-        runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            packages: write
-        outputs:
-            image-tag: '${{ steps.meta.outputs.tags }}'
-        steps:
-        - name: Checkout Repository
-          uses: actions/checkout@v4
-        - name: Login to Container Registry 
-          uses: docker/login-action@v3
-          with:
-            registry: '${{ env.REGISTRY }}'
-            username: '${{ github.actor }}'
-            password: '${{ secrets.GITHUB_TOKEN}}'
-        - name: Extract metadata for Docker
-          id: meta
-          uses: docker/metadata-action@v4
-          with: 
-            images: '${{ env.REGISTRY }}/${{ env.APP_NAME }}'
-            tags: | 
-                type=sha, format=short
-        - name: Build & Publish Docker Image to GitHab Package
-          uses: docker/build-push-action@v5
-          with: 
-            context: . 
-            push: true
-            tags: '${{ steps.meta.outputs.tags}}'
-            labels: '${{ steps.meta.outputs.labels}}'
+  build:
+    name: Build & Publish Docker Image
+    runs-on: ubuntu-latest
+# Set Permissions
+    permissions:
+      contents: read
+      packages: write
+# Set Outputs
+    outputs:
+      image-tag: '${{ steps.meta.outputs.tags }}'
+# Add Code Checkout Build Step
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+# Add Container Login Step
+    - name: Login to Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: '${{ env.REGISTRY}}'
+        username: '${{ github.actor }}'
+        password: '${{ secrets.GITHUB_TOKEN }}'
+# Create Docker Metadata
+    - name: Extract metadata for Docker
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: '${{ env.REGISTRY }}/${{ env.APP_NAME }}'        
+        tags: |
+          type=sha, format=short
+# Build and Publish Docker Image
+    - name: Build & Publish Docker Image     
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: '${{ steps.meta.outputs.tags }}'
+        labels: '${{ steps.meta.outputs.labels }}'
+
+# name: CLUS GitHub Actions Demo 
+
+# on: 
+#     push:
+#         branches:
+#             - main
+
+# env:
+#     APP_NAME: '${{ github.repository }}'
+#     REGISTRY: ghcr.io
+
+# jobs:
+#     build:
+#         name: Build & Publish Docker Image
+#         runs-on: ubuntu-latest
+#         permissions:
+#             contents: read
+#             packages: write
+#         outputs:
+#             image-tag: '${{ steps.meta.outputs.tags }}'
+#         steps:
+#         - name: Checkout Repository
+#           uses: actions/checkout@v4
+#         - name: Login to Container Registry 
+#           uses: docker/login-action@v3
+#           with:
+#             registry: '${{ env.REGISTRY }}'
+#             username: '${{ github.actor }}'
+#             password: '${{ secrets.GITHUB_TOKEN}}'
+#         - name: Extract metadata for Docker
+#           id: meta
+#           uses: docker/metadata-action@v4
+#           with: 
+#             images: '${{ env.REGISTRY }}/${{ env.APP_NAME }}'
+#             tags: | 
+#                 type=sha, format=short
+#         - name: Build & Publish Docker Image to GitHab Package
+#           uses: docker/build-push-action@v5
+#           with: 
+#             context: . 
+#             push: true
+#             tags: '${{ steps.meta.outputs.tags}}'
+#             labels: '${{ steps.meta.outputs.labels}}'
